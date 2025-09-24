@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "my-blog",
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/1", "destination": "/1.html", "permanent": true }
+  ]
+}
+
+

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的个人博客</title>
+  <meta name="description" content="一个简洁、响应式、带暗色模式的个人博客页面">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --card: #f8fafc;
+      --border: #e5e7eb;
+      --primary: #2563eb;
+      --primary-contrast: #ffffff;
+      --tag-bg: #eff6ff;
+      --tag-text: #1d4ed8;
+      --code-bg: #f3f4f6;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0b0f14;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --card: #0f1720;
+      --border: #1f2937;
+      --primary: #60a5fa;
+      --primary-contrast: #0b0f14;
+      --tag-bg: #0b274a;
+      --tag-text: #93c5fd;
+      --code-bg: #0b1220;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(10px);
+      background: color-mix(in oklab, var(--bg) 75%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--primary), #22c55e);
+      border: 1px solid var(--border);
+    }
+    .title { font-weight: 700; font-size: 18px; }
+    .subtitle { color: var(--muted); font-size: 12px; }
+
+    .actions { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border: 1px solid var(--border);
+      border-radius: 10px; background: var(--card); color: var(--text);
+      cursor: pointer; transition: background .2s, border-color .2s, transform .05s;
+    }
+    .btn:active { transform: translateY(1px); }
+
+    main.layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; padding: 22px 0 36px; }
+    @media (max-width: 960px) {
+      main.layout { grid-template-columns: 1fr; }
+      aside.sidebar { order: -1; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    /* Posts */
+    .post { margin-bottom: 16px; }
+    .post .meta { color: var(--muted); font-size: 12px; margin-top: -4px; }
+    .post h2 { margin: 12px 0 6px; line-height: 1.35; }
+    .post h3 { margin: 16px 0 8px; line-height: 1.35; }
+    .post p { margin: 10px 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag { font-size: 12px; padding: 4px 8px; background: var(--tag-bg); color: var(--tag-text); border-radius: 999px; border: 1px solid var(--border); }
+
+    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); padding: 12px; border-radius: 10px; overflow: auto; }
+
+    /* Sidebar */
+    aside.sidebar { position: relative; }
+    .sticky { position: sticky; top: 74px; }
+    .profile { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; }
+    .avatar { width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #f59e0b, #ef4444); border: 1px solid var(--border); }
+    .name { font-weight: 700; }
+    .bio { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .toc h4 { margin: 0 0 10px; font-size: 14px; }
+    .toc nav a { display: block; padding: 6px 8px; border-radius: 8px; color: var(--text); border: 1px solid transparent; }
+    .toc nav a:hover { background: var(--code-bg); border-color: var(--border); text-decoration: none; }
+    .toc nav a.depth-3 { padding-left: 18px; font-size: 13px; color: var(--muted); }
+
+    footer.site-footer { border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="title">我的个人博客</div>
+          <div class="subtitle">Keep learning. Keep shipping.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="themeToggle" class="btn" aria-label="切换主题">🌙 暗色</button>
+        <a class="btn" href="#" onclick="alert('搜索功能待实现'); return false;">🔎 搜索</a>
+        <a class="btn" href="#" onclick="alert('订阅功能待实现'); return false;">📮 订阅</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <main class="layout">
+      <section id="content">
+        <article class="card post" id="welcome">
+          <h2>欢迎来到我的博客</h2>
+          <p class="meta">发布于 2025-09-24 · 3 min read</p>
+          <p>这里记录我的学习、打造的小工具以及一些零碎的想法。页面是纯前端实现，支持响应式布局与暗色模式。</p>
+          <div class="tags">
+            <span class="tag">前端</span>
+            <span class="tag">效率</span>
+            <span class="tag">生活</span>
+          </div>
+        </article>
+
+        <article class="card post" id="build-a-blog">
+          <h2>从零实现一个简洁博客页面</h2>
+          <p class="meta">发布于 2025-09-20 · 6 min read</p>
+          <p>搭建个人博客并不一定需要复杂的框架。本页采用原生 HTML/CSS/JS，足以满足大部分静态内容展示需求。</p>
+          <h3>布局</h3>
+          <p>使用 CSS Grid 构建主布局，内容区 + 侧边栏；为侧边栏开启 <code>position: sticky</code>，在滚动时保持目录可见。</p>
+          <h3>暗色模式</h3>
+          <p>通过 <code>data-theme</code> + CSS 变量切换主题，用户选择持久化在 <code>localStorage</code>。</p>
+          <pre><code>const THEME_KEY = 'site-theme';
+const preferred = localStorage.getItem(THEME_KEY) || 'light';
+document.documentElement.setAttribute('data-theme', preferred);
+          </code></pre>
+          <h3>可访问性</h3>
+          <p>按钮具备可读的 <code>aria-label</code>；颜色对比尽可能符合 WCAG 推荐标准。</p>
+          <div class="tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </article>
+
+        <article class="card post" id="notes">
+          <h2>学习笔记：小而美的原则</h2>
+          <p class="meta">发布于 2025-09-15 · 4 min read</p>
+          <p>保持页面结构简单、样式清晰、交互克制，能显著降低维护成本。</p>
+          <h3>命名与可读性</h3>
+          <p>变量与函数命名尽量表达意图；拆分复杂逻辑；避免深层嵌套。</p>
+          <h3>组件化思维</h3>
+          <p>即便在纯 HTML 里，也可以用 <em>卡片</em>、<em>按钮</em>、<em>标签</em> 这些可复用的视觉单元思考问题。</p>
+          <div class="tags">
+            <span class="tag">工程化</span>
+            <span class="tag">Best Practice</span>
+          </div>
+        </article>
+      </section>
+
+      <aside class="sidebar">
+        <div class="sticky">
+          <div class="card profile" aria-label="个人信息">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <div class="name">AX</div>
+              <div class="bio">写代码｜做小工具｜记录所学</div>
+            </div>
+          </div>
+
+          <div class="card toc" style="margin-top: 16px;">
+            <h4>目录</h4>
+            <nav id="toc"></nav>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h4 style="margin: 0 0 10px;">热门标签</h4>
+            <div class="tags">
+              <a class="tag" href="#"># 前端</a>
+              <a class="tag" href="#"># 学习</a>
+              <a class="tag" href="#"># 工具</a>
+              <a class="tag" href="#"># 生活</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      © <span id="year"></span> AX · 使用原生 HTML/CSS/JS 构建 · <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">回到顶部</a>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle with localStorage
+    (function initTheme() {
+      const THEME_KEY = 'site-theme';
+      const root = document.documentElement;
+      function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.textContent = theme === 'dark' ? '🌞 明亮' : '🌙 暗色';
+      }
+      const saved = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      applyTheme(theme);
+      const toggle = document.getElementById('themeToggle');
+      toggle.addEventListener('click', function() {
+        const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+    })();
+
+    // Build TOC from h2/h3 inside articles
+    (function buildTOC() {
+      const nav = document.getElementById('toc');
+      if (!nav) return;
+      const headings = document.querySelectorAll('#content article h2, #content article h3');
+      const frag = document.createDocumentFragment();
+      headings.forEach(function(h) {
+        if (!h.id) {
+          h.id = h.textContent.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+        }
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        a.className = 'depth-' + (h.tagName === 'H3' ? '3' : '2');
+        frag.appendChild(a);
+      });
+      nav.appendChild(frag);
+    })();
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
+
