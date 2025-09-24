@@ -66,6 +66,13 @@
       padding: 14px 0;
       gap: 16px;
     }
+    nav.primary-nav { display: none; }
+    @media (min-width: 961px) {
+      .header-inner { gap: 24px; }
+      nav.primary-nav { display: flex; gap: 14px; }
+      nav.primary-nav a { color: var(--text); padding: 6px 10px; border-radius: 8px; }
+      nav.primary-nav a:hover { background: var(--code-bg); text-decoration: none; }
+    }
     .brand { display: flex; align-items: center; gap: 12px; }
     .logo {
       width: 36px; height: 36px; border-radius: 9px;
@@ -97,8 +104,22 @@
       padding: 18px;
     }
 
+    /* Hero */
+    .hero {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 22px; padding: 24px 0 6px;
+    }
+    .hero .lead { padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(180deg, color-mix(in oklab, var(--card) 85%, transparent), var(--card)); }
+    .hero h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.25; }
+    .hero p { margin: 8px 0 0; color: var(--muted); }
+    .hero .stats { display: flex; gap: 10px; margin-top: 14px; }
+    .pill { font-size: 12px; padding: 6px 10px; background: var(--code-bg); border-radius: 999px; border: 1px solid var(--border); color: var(--text); }
+    @media (max-width: 960px) { .hero { grid-template-columns: 1fr; } }
+
     /* Posts */
-    .post { margin-bottom: 16px; }
+    .post { margin-bottom: 16px; overflow: hidden; }
+    .cover { height: 180px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); }
+    .post .title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .post .readmore { font-size: 13px; }
     .post .meta { color: var(--muted); font-size: 12px; margin-top: -4px; }
     .post h2 { margin: 12px 0 6px; line-height: 1.35; }
     .post h3 { margin: 16px 0 8px; line-height: 1.35; }
@@ -108,6 +129,10 @@
 
     pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
     pre { background: var(--code-bg); border: 1px solid var(--border); padding: 12px; border-radius: 10px; overflow: auto; }
+
+    .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 16px; }
+    .pagination a { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); text-decoration: none; }
+    .pagination a.active { background: var(--primary); color: var(--primary-contrast); border-color: var(--primary); }
 
     /* Sidebar */
     aside.sidebar { position: relative; }
@@ -121,7 +146,23 @@
     .toc nav a:hover { background: var(--code-bg); border-color: var(--border); text-decoration: none; }
     .toc nav a.depth-3 { padding-left: 18px; font-size: 13px; color: var(--muted); }
 
+    /* Sections */
+    section.section { padding: 8px 0 24px; }
+    .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .project { padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+    .project .name { font-weight: 700; margin: 0 0 6px; }
+    .project .desc { color: var(--muted); font-size: 14px; margin: 0; }
+
+    .about p { margin: 8px 0; }
+
+    .contact .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .contact .card a { text-decoration: none; }
+    @media (max-width: 720px) { .contact .row { grid-template-columns: 1fr; } }
+
+    /* Footer */
     footer.site-footer { border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); font-size: 13px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+    .socials { display: flex; gap: 10px; }
   </style>
 </head>
 <body>
@@ -134,6 +175,12 @@
           <div class="subtitle">Keep learning. Keep shipping.</div>
         </div>
       </div>
+      <nav class="primary-nav" aria-label="主导航">
+        <a href="#content">文章</a>
+        <a href="#projects">项目</a>
+        <a href="#about">关于</a>
+        <a href="#contact">联系</a>
+      </nav>
       <div class="actions">
         <button id="themeToggle" class="btn" aria-label="切换主题">🌙 暗色</button>
         <a class="btn" href="#" onclick="alert('搜索功能待实现'); return false;">🔎 搜索</a>
@@ -143,9 +190,25 @@
   </header>
 
   <div class="container">
+    <section class="hero" aria-label="引导">
+      <div class="lead">
+        <h1>记录、构建、分享</h1>
+        <p>专注前端工程、效率工具与实用技术笔记。这里是我输出与交流的空间。</p>
+        <div class="stats">
+          <span class="pill">📄 3 篇文章</span>
+          <span class="pill">🧩 3 个项目</span>
+          <span class="pill">🕶️ 暗色模式</span>
+        </div>
+      </div>
+      <div class="card" aria-hidden="true">
+        <div class="cover" style="height:220px; background-image:url('https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1200&auto=format&fit=crop');"></div>
+        <p style="margin:10px 0 0; color:var(--muted); font-size:13px;">图片来自 Unsplash</p>
+      </div>
+    </section>
     <main class="layout">
       <section id="content">
         <article class="card post" id="welcome">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200&auto=format&fit=crop');"></div>
           <h2>欢迎来到我的博客</h2>
           <p class="meta">发布于 2025-09-24 · 3 min read</p>
           <p>这里记录我的学习、打造的小工具以及一些零碎的想法。页面是纯前端实现，支持响应式布局与暗色模式。</p>
@@ -154,9 +217,14 @@
             <span class="tag">效率</span>
             <span class="tag">生活</span>
           </div>
+          <div class="title-row">
+            <span></span>
+            <a class="readmore" href="#">阅读全文 →</a>
+          </div>
         </article>
 
         <article class="card post" id="build-a-blog">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop');"></div>
           <h2>从零实现一个简洁博客页面</h2>
           <p class="meta">发布于 2025-09-20 · 6 min read</p>
           <p>搭建个人博客并不一定需要复杂的框架。本页采用原生 HTML/CSS/JS，足以满足大部分静态内容展示需求。</p>
@@ -175,9 +243,14 @@ document.documentElement.setAttribute('data-theme', preferred);
             <span class="tag">CSS</span>
             <span class="tag">JavaScript</span>
           </div>
+          <div class="title-row">
+            <span></span>
+            <a class="readmore" href="#">阅读全文 →</a>
+          </div>
         </article>
 
         <article class="card post" id="notes">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1523246191815-8c1f4e8cda5e?q=80&w=1200&auto=format&fit=crop');"></div>
           <h2>学习笔记：小而美的原则</h2>
           <p class="meta">发布于 2025-09-15 · 4 min read</p>
           <p>保持页面结构简单、样式清晰、交互克制，能显著降低维护成本。</p>
@@ -189,7 +262,17 @@ document.documentElement.setAttribute('data-theme', preferred);
             <span class="tag">工程化</span>
             <span class="tag">Best Practice</span>
           </div>
+          <div class="title-row">
+            <span></span>
+            <a class="readmore" href="#">阅读全文 →</a>
+          </div>
         </article>
+
+        <div class="pagination">
+          <a href="#" class="active">1</a>
+          <a href="#">2</a>
+          <a href="#">下一页 →</a>
+        </div>
       </section>
 
       <aside class="sidebar">
@@ -221,9 +304,66 @@ document.documentElement.setAttribute('data-theme', preferred);
     </main>
   </div>
 
+  <div class="container">
+    <section id="projects" class="section">
+      <h2>项目 Projects</h2>
+      <div class="projects">
+        <div class="project">
+          <div class="name">Markmap 主题优化</div>
+          <p class="desc">为思维导图生成器增加样式与导出优化，提高可读性。</p>
+        </div>
+        <div class="project">
+          <div class="name">Google Play 爬虫</div>
+          <p class="desc">抓取应用信息与评论，做数据分析与可视化。</p>
+        </div>
+        <div class="project">
+          <div class="name">个人博客主题</div>
+          <p class="desc">纯 HTML/CSS/JS 的极简博客主题，支持暗色模式与目录。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <h2>关于 About</h2>
+      <p>你好，我是 AX，专注前端与效率工具。喜欢把复杂问题拆小，用清晰的设计和简单的代码解决实际问题。</p>
+      <p>这个博客用于沉淀：一是记录学习笔记，二是对外输出项目实践。</p>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2>联系 Contact</h2>
+      <div class="row">
+        <div class="card">
+          <h3 style="margin:0 0 8px;">社交</h3>
+          <div class="tags">
+            <a class="tag" href="#">GitHub</a>
+            <a class="tag" href="#">Twitter</a>
+            <a class="tag" href="#">Email</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px;">合作</h3>
+          <p class="bio">如果你对开源项目、前端组件或小工具有想法，欢迎交流。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <footer class="site-footer">
     <div class="container">
-      © <span id="year"></span> AX · 使用原生 HTML/CSS/JS 构建 · <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">回到顶部</a>
+      <div class="footer-links">
+        <a href="#content">文章</a>
+        <a href="#projects">项目</a>
+        <a href="#about">关于</a>
+        <a href="#contact">联系</a>
+      </div>
+      <div class="socials" aria-label="社交链接">
+        <a href="#" title="GitHub">🐙</a>
+        <a href="#" title="Twitter">🐦</a>
+        <a href="#" title="Email">✉️</a>
+      </div>
+      <div style="margin-top:8px;">
+        © <span id="year"></span> AX · 使用原生 HTML/CSS/JS 构建 · <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">回到顶部</a>
+      </div>
     </div>
   </footer>
 
